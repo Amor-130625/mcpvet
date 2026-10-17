@@ -107,4 +107,4 @@ A tool whose purpose is to audit supply-chain risk must not add supply-chain ris
 | `cli.test.js` | Real process, real exit codes, real files |
 | `self-audit.test.js` | The examples and the documented numbers are still true |
 
-The suite runs with `node --test` and no test dependencies. `node --test --test-isolation=none "test/*.test.js"` runs everything in one process for environments where spawning child processes is unavailable.
+The suite runs with `node --test` and no test dependencies. `npm test` delegates to `scripts/run-tests.mjs`, which passes an explicit file list: `node --test test/` is not portable (newer Node versions treat the positional argument as something to execute, so a directory becomes `require('test')`), and globs are not portable either (shells differ, and Node only gained glob support in v22). `npm run test:inproc` runs every file in one process for environments where spawning child processes is unavailable.

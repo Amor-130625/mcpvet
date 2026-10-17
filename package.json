@@ -37,9 +37,9 @@
     "node": ">=20.11.0"
   },
   "scripts": {
-    "test": "node --test test/",
-    "test:inproc": "node --test --test-isolation=none \"test/*.test.js\"",
-    "test:coverage": "node --test --experimental-test-coverage test/",
+    "test": "node scripts/run-tests.mjs",
+    "test:inproc": "node scripts/run-tests.mjs --in-process",
+    "test:coverage": "node scripts/run-tests.mjs --coverage",
     "syntax": "node scripts/check-syntax.mjs",
     "self:audit": "node scripts/self-audit.mjs",
     "docs": "node scripts/generate-rule-docs.mjs",
