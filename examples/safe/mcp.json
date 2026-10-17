@@ -1,0 +1,30 @@
+// A config that passes the current rule set: pinned packages, a scoped
+// filesystem root, credentials referenced through the environment, and an
+// authenticated https endpoint.
+//
+// The server is deliberately not named "filesystem": it sits next to
+// examples/vulnerable, which also declares a server called "filesystem", and
+// MCP041 would correctly report the two as conflicting definitions. Two
+// example directories are not a real client setup, so the name differs.
+{
+  "mcpServers": {
+    "project-files": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@2025.7.1", "./docs"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github@2025.6.1"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "docs": {
+      "type": "http",
+      "url": "https://mcp.example.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MCP_DOCS_TOKEN}"
+      }
+    }
+  }
+}

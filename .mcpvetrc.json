@@ -1,0 +1,8 @@
+{
+  "$schema": "https://github.com/Amor-130625/mcpvet/blob/main/schema/mcpvetrc.schema.json",
+  "failOn": "high",
+  "minSeverity": null,
+  "ignore": [],
+  "baseline": ".mcpvet-baseline.json",
+  "descriptors": []
+}

@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.os }}, node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Syntax check
+        run: npm run syntax
+
+      - name: Test
+        run: npm test
+
+      - name: Self-audit
+        run: npm run self:audit
+
+  docs:
+    name: generated docs are current
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run docs:check
+
+  dogfood:
+    name: audit this repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: The clean example must pass
+        run: node bin/mcpvet.js scan examples/safe --fail-on high
+
+      - name: The vulnerable example must fail
+        run: |
+          if node bin/mcpvet.js scan examples/vulnerable --format sarif --output mcpvet-example.sarif --fail-on high; then
+            echo "::error::the vulnerable example passed; a rule has stopped firing"
+            exit 1
+          fi
+
+      - name: The vulnerable example must still produce valid SARIF
+        run: node -e "const s=require('./mcpvet-example.sarif'); if (s.version !== '2.1.0' || !s.runs[0].results.length) { throw new Error('invalid SARIF'); }"

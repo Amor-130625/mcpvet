@@ -1,0 +1,67 @@
+name: Rule proposal
+description: Propose a new check, or a change to how an existing rule behaves
+labels: ["rule-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A rule is worth adding when a **real configuration gets it wrong**, the check is **decidable from the config or
+        manifest**, there is a **clear fix**, and it does not duplicate an existing rule.
+        See [CONTRIBUTING.md](https://github.com/Amor-130625/mcpvet/blob/main/CONTRIBUTING.md#proposing-a-rule).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Is this a new rule or a change to one?
+      options:
+        - New rule
+        - Change to an existing rule (behaviour)
+        - Change to an existing rule (severity)
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: Rule id
+      description: For a new rule, leave blank. For a change, name the rule (e.g. `MCP030`).
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Real-world evidence
+      description: Link to a public README, issue, or advisory where this mistake appears. Hypotheticals are hard to act on.
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: The configuration this should catch
+      render: jsonc
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: What does an attacker, or an ordinary mistake, get from this configuration?
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: What should the fix be?
+      description: The message a user will read, and the change they should make.
+    validations:
+      required: true
+  - type: input
+    id: severity
+    attributes:
+      label: Suggested severity
+      placeholder: "medium"
+    validations:
+      required: true
+  - type: textarea
+    id: negative
+    attributes:
+      label: What correct configuration must stay quiet?
+      description: Every rule needs a negative test. Describe the version of this config that should not fire.
+    validations:
+      required: true

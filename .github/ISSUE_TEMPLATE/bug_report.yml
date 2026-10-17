@@ -1,0 +1,70 @@
+name: Bug report
+description: Something crashed, printed the wrong thing, or missed a finding it should have caught
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report.
+
+        **Do not paste a real credential.** Replace any token with a placeholder of the same shape
+        (`sk-proj-AAAA…`). Security problems that are not ordinary bugs go through
+        [SECURITY.md](https://github.com/Amor-130625/mcpvet/blob/main/SECURITY.md), not this form.
+  - type: input
+    id: version
+    attributes:
+      label: mcpvet version
+      description: Output of `npx mcpvet --version`.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version and OS
+      placeholder: "22.11.0 on Windows 11"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem is it?
+      options:
+        - Crashes or throws an internal error (exit code 3)
+        - A false positive (fires on correct configuration)
+        - A false negative (misses a bad configuration)
+        - Wrong output (format, line number, severity)
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: The smallest config or descriptor that shows the problem, plus the exact command you ran.
+      render: jsonc
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+      description: Paste the output. If it contains a token, replace it before pasting.
+      render: console
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: This report contains no real credentials.
+          required: true

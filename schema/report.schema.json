@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Amor-130625/mcpvet/blob/main/schema/report.schema.json",
+  "title": "mcpvet JSON report",
+  "description": "The shape of `mcpvet scan --format json`. Treated as public API: renaming a field is a breaking change and requires a major version.",
+  "type": "object",
+  "required": ["tool", "generatedAt", "summary", "stats", "findings"],
+  "additionalProperties": false,
+  "properties": {
+    "tool": {
+      "type": "object",
+      "required": ["name", "version", "homepage"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "const": "mcpvet" },
+        "version": { "type": "string" },
+        "homepage": { "type": "string", "format": "uri" }
+      }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object",
+      "required": ["findings", "counts", "penalty", "score", "grade", "passed"],
+      "additionalProperties": false,
+      "properties": {
+        "findings": { "type": "integer", "minimum": 0 },
+        "counts": {
+          "type": "object",
+          "required": ["critical", "high", "medium", "low", "info"],
+          "additionalProperties": false,
+          "properties": {
+            "critical": { "type": "integer", "minimum": 0 },
+            "high": { "type": "integer", "minimum": 0 },
+            "medium": { "type": "integer", "minimum": 0 },
+            "low": { "type": "integer", "minimum": 0 },
+            "info": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "penalty": { "type": "integer", "minimum": 0 },
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "grade": { "type": "string", "enum": ["A", "B", "C", "D", "F"] },
+        "passed": { "type": "boolean", "description": "True when no findings were reported." }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "required": ["files", "configs", "descriptors", "servers", "tools", "rules", "errors", "disabledServers"],
+      "additionalProperties": false,
+      "properties": {
+        "files": { "type": "integer", "minimum": 0 },
+        "configs": { "type": "integer", "minimum": 0 },
+        "descriptors": { "type": "integer", "minimum": 0 },
+        "servers": { "type": "integer", "minimum": 0 },
+        "tools": { "type": "integer", "minimum": 0 },
+        "rules": { "type": "integer", "minimum": 0 },
+        "errors": { "type": "integer", "minimum": 0 },
+        "disabledServers": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ruleId",
+          "title",
+          "category",
+          "severity",
+          "message",
+          "file",
+          "line",
+          "column",
+          "server",
+          "tool",
+          "evidence",
+          "detail",
+          "remediation",
+          "references",
+          "fingerprint"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ruleId": { "type": "string", "pattern": "^MCP[0-9]{3}$" },
+          "title": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "supply-chain",
+              "credentials",
+              "transport",
+              "capability",
+              "posture",
+              "injection",
+              "schema",
+              "configuration"
+            ]
+          },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "message": { "type": "string", "description": "Redacted before it reaches this field." },
+          "file": { "type": ["string", "null"], "description": "Display path; repo-relative when inside the working directory." },
+          "line": { "type": ["integer", "null"], "minimum": 1 },
+          "column": { "type": ["integer", "null"], "minimum": 1 },
+          "server": { "type": ["string", "null"] },
+          "tool": { "type": ["string", "null"] },
+          "evidence": { "type": ["string", "null"], "description": "Redacted excerpt; never contains a live credential." },
+          "detail": { "type": ["string", "null"] },
+          "remediation": { "type": "string" },
+          "references": { "type": "array", "items": { "type": "string", "format": "uri" } },
+          "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{16}$" }
+        }
+      }
+    }
+  }
+}

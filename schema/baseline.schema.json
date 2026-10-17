@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Amor-130625/mcpvet/blob/main/schema/baseline.schema.json",
+  "title": "mcpvet baseline",
+  "description": "Accepted findings. Commit this file; CI fails only on findings whose fingerprint is not listed here.",
+  "type": "object",
+  "required": ["version", "tool", "generatedAt", "entries"],
+  "additionalProperties": true,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "tool": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "mcpvet" },
+        "version": { "type": "string" }
+      }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "note": { "type": "string" },
+    "count": { "type": "integer", "minimum": 0 },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["fingerprint", "ruleId"],
+        "properties": {
+          "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
+          "ruleId": { "type": "string", "pattern": "^MCP[0-9]{3}$" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "file": { "type": ["string", "null"] },
+          "server": { "type": ["string", "null"] },
+          "message": { "type": "string" }
+        }
+      }
+    }
+  }
+}

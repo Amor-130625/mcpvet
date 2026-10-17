@@ -1,0 +1,22 @@
+# Dependencies are intentionally absent. mcpvet ships with zero dependencies,
+# including devDependencies, so that the tool you audit with has no supply chain.
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Local audit output
+mcpvet.sarif
+mcpvet.json
+mcpvet.md
+*.sarif
+.mcpvet-baseline.local.json
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+coverage/

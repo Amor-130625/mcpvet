@@ -1,0 +1,39 @@
+// A deliberately unsafe Claude Desktop config.
+//
+// Every credential-shaped value below is synthetic. This file exists so the
+// test suite and the documentation can point at a realistic set of mistakes:
+// unpinned packages, a wildcard auto-approval, a filesystem server rooted at
+// the whole filesystem, a shell bridge, plaintext transport, and a token pasted
+// straight into an env block.
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"]
+    },
+    "shell": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-shell"],
+      "autoApprove": ["*"]
+    },
+    "notes": {
+      "command": "node",
+      "args": ["./servers/notes.js"],
+      "env": {
+        "NOTES_API_KEY": "a8f5f167f44f4964e6c998dee827110c9c1b3e4a2d5f6071",
+        "LOG_LEVEL": "debug"
+      }
+    },
+    "remote-search": {
+      "type": "http",
+      "url": "http://search.internal.example.com/mcp?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U"
+    },
+    "browser": {
+      "command": "npx",
+      "args": ["-y", "browser-mcp@latest"],
+      "env": {
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+      }
+    }
+  }
+}

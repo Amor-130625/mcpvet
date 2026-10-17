@@ -1,0 +1,60 @@
+{
+  "name": "mcpvet",
+  "version": "0.1.0",
+  "description": "Vet MCP servers before your agent does. A zero-dependency security auditor for Model Context Protocol client configs and tool definitions.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "security",
+    "linter",
+    "sarif",
+    "ai-agents",
+    "supply-chain"
+  ],
+  "license": "MIT",
+  "author": "Amor-130625",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./rules": "./src/rules/index.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "mcpvet": "bin/mcpvet.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "schema",
+    "action.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "test": "node --test test/",
+    "test:inproc": "node --test --test-isolation=none \"test/*.test.js\"",
+    "test:coverage": "node --test --experimental-test-coverage test/",
+    "syntax": "node scripts/check-syntax.mjs",
+    "self:audit": "node scripts/self-audit.mjs",
+    "docs": "node scripts/generate-rule-docs.mjs",
+    "docs:check": "node scripts/generate-rule-docs.mjs --check",
+    "audit:examples": "node bin/mcpvet.js scan examples/vulnerable",
+    "check": "npm run syntax && npm run docs:check && npm run test && npm run self:audit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amor-130625/mcpvet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Amor-130625/mcpvet/issues"
+  },
+  "homepage": "https://github.com/Amor-130625/mcpvet#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}

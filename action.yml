@@ -1,0 +1,56 @@
+name: mcpvet
+description: Audit MCP server configs and tool manifests for security risks, and emit SARIF for code scanning
+author: Amor-130625
+
+branding:
+  icon: shield
+  color: purple
+
+inputs:
+  path:
+    description: File or directory to scan. Defaults to the repository root.
+    required: false
+    default: "."
+  format:
+    description: Output format (pretty, json, sarif, markdown).
+    required: false
+    default: "sarif"
+  output:
+    description: File to write the report to.
+    required: false
+    default: "mcpvet.sarif"
+  fail-on:
+    description: Lowest severity that fails the step (none, info, low, medium, high, critical).
+    required: false
+    default: "high"
+  args:
+    description: Extra arguments appended to the scan command, e.g. "--ignore MCP001 --baseline .mcpvet-baseline.json".
+    required: false
+    default: ""
+
+outputs:
+  report:
+    description: Path to the report that was written.
+    value: ${{ inputs.output }}
+
+runs:
+  using: composite
+  steps:
+    - name: Run mcpvet
+      shell: bash
+      env:
+        MCPVET_PATH: ${{ inputs.path }}
+        MCPVET_FORMAT: ${{ inputs.format }}
+        MCPVET_OUTPUT: ${{ inputs.output }}
+        MCPVET_FAIL_ON: ${{ inputs.fail-on }}
+        MCPVET_ARGS: ${{ inputs.args }}
+      run: |
+        set -euo pipefail
+        # The action runs the checked-out Node sources directly: no install step,
+        # no network access, no third-party action to trust.
+        # shellcheck disable=SC2086
+        node "$GITHUB_ACTION_PATH/bin/mcpvet.js" scan "$MCPVET_PATH" \
+          --format "$MCPVET_FORMAT" \
+          --output "$MCPVET_OUTPUT" \
+          --fail-on "$MCPVET_FAIL_ON" \
+          $MCPVET_ARGS

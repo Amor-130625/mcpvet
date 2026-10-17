@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Amor-130625/mcpvet/blob/main/schema/mcpvetrc.schema.json",
+  "title": "mcpvet settings (.mcpvetrc.json)",
+  "description": "Project settings. JSONC (comments and trailing commas) is accepted. Command-line flags take precedence over this file.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "failOn": {
+      "type": "string",
+      "enum": ["none", "info", "low", "medium", "high", "critical"],
+      "default": "high",
+      "description": "Lowest severity that produces exit code 1."
+    },
+    "minSeverity": {
+      "type": ["string", "null"],
+      "enum": ["info", "low", "medium", "high", "critical", null],
+      "default": null,
+      "description": "Findings below this severity are not reported at all."
+    },
+    "ignore": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^MCP[0-9]{3}$" },
+      "default": [],
+      "description": "Rule ids to skip. Prefer a comment in the pull request explaining why."
+    },
+    "baseline": {
+      "type": "string",
+      "default": ".mcpvet-baseline.json",
+      "description": "Path to the accepted-findings file. Omit the file to run without a baseline."
+    },
+    "descriptors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "tools/list JSON files to audit alongside the configs."
+    },
+    "format": {
+      "type": "string",
+      "enum": ["pretty", "json", "sarif", "markdown"],
+      "description": "Default output format."
+    }
+  }
+}

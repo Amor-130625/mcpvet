@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Amor-130625/mcpvet/security/advisories/new
+    about: Report a credential leak, crash, rule bypass, or anything else that is not an ordinary bug. Do not open a public issue.
+  - name: Question or usage help
+    url: https://github.com/Amor-130625/mcpvet/discussions
+    about: Ask about adoption, CI setup, or whether a finding is a false positive.
+  - name: Rule reference
+    url: https://github.com/Amor-130625/mcpvet/blob/main/docs/rules.md
+    about: Every rule, with its rationale and its fix.

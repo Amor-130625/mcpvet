@@ -1,0 +1,11 @@
+// The same "filesystem" server, declared again for a different client — but
+// pinned and scoped to ./docs here. Two definitions of one name is what
+// MCP041 reports: the agent's capabilities depend on which client starts.
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@2025.7.1", "./docs"]
+    }
+  }
+}
